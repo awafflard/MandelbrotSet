@@ -10,7 +10,7 @@
 #include "Context.hpp"
 #include <SFML/Graphics.hpp>
 
-void computeImage(Context *context, sf::Image *pixels);
+void computeImage(Context *context);
 bool mandelbrot(double x, double y);
 
 #endif

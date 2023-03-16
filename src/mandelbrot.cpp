@@ -3,23 +3,20 @@
 #include "Context.hpp"
 #include <SFML/Graphics.hpp>
 
-void computeImage(Context *context, sf::Image *pixels)
+void computeImage(Context *context)
 {
-    double zoomX = context->getWidth() / (X2 - X1);
-    double zoomY = context->getHeight() / (Y2 - Y1);
+    double zoomX = context->windowWidth / (X2 - X1);
+    double zoomY = context->windowHeight / (Y2 - Y1);
     double relativeX(0.0);
     double relativeY(0.0);
 
-    for (int x = 0; x < context->getWidth(); x++)
+    for (int x = 0; x < context->windowWidth; x++)
     {
-        for (int y = 0; y < context->getHeight(); y++)
+        for (int y = 0; y < context->windowHeight; y++)
         {
             relativeX = x / zoomX + X1;
             relativeY = y / zoomY + Y1;
-            if (mandelbrot(relativeX, relativeY))
-                pixels->setPixel(x, y, sf::Color::Black);
-            else
-                pixels->setPixel(x, y, sf::Color::White);
+            context->setPixel(x, y, mandelbrot(relativeX, relativeY));
         }
     }
 }
