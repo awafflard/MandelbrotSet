@@ -5,14 +5,14 @@
 
 void computeImage(Context *context)
 {
-    double zoomX = context->windowWidth / (X2 - X1);
-    double zoomY = context->windowHeight / (Y2 - Y1);
+    double zoomX = context->drawZoneWidth / (X2 - X1);
+    double zoomY = context->drawZoneHeight / (Y2 - Y1);
     double relativeX(0.0);
     double relativeY(0.0);
 
-    for (int x = 0; x < context->windowWidth; x++)
+    for (int x = 0; x < context->drawZoneWidth; x++)
     {
-        for (int y = 0; y < context->windowHeight; y++)
+        for (int y = 0; y < context->drawZoneHeight; y++)
         {
             relativeX = x / zoomX + X1;
             relativeY = y / zoomY + Y1;

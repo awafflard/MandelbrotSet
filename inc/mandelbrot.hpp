@@ -5,7 +5,7 @@
 #define X2 0.6
 #define Y1 -1.2
 #define Y2 1.2
-#define MAX_ITERATIONS 50
+#define MAX_ITERATIONS 200
 
 #include "Context.hpp"
 #include <SFML/Graphics.hpp>

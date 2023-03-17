@@ -1,6 +1,8 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
+#define IMAGE_RATIO 1.125
+
 #include <SFML/Graphics.hpp>
 
 class Context {
@@ -13,6 +15,10 @@ class Context {
         sf::RenderWindow *window;
         int windowWidth;
         int windowHeight;
+        int drawZoneWidth;
+        int drawZoneHeight;
+        int drawZoneOffsetX;
+        int drawZoneOffsetY;
 
     private:
         sf::Image *pixels;

@@ -8,6 +8,8 @@ int main()
     Context *context = new Context();
 
     context->init();
+
+    std::cout << 270.0 / 240.0 << std::endl;
     
     while (context->window->isOpen())
     {
@@ -28,7 +30,7 @@ int main()
             }
         }
 
-        context->window->clear();
+        context->window->clear(sf::Color::White);
 
         computeImage(context);
         if(!context->draw())
