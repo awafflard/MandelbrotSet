@@ -8,8 +8,6 @@ int main()
     Context *context = new Context();
 
     context->init();
-
-    std::cout << 270.0 / 240.0 << std::endl;
     
     while (context->window->isOpen())
     {

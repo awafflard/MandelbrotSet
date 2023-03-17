@@ -11,6 +11,6 @@
 #include <SFML/Graphics.hpp>
 
 void computeImage(Context *context);
-bool mandelbrot(double x, double y);
+int mandelbrot(double x, double y);
 
 #endif

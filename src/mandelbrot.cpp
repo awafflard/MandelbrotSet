@@ -9,6 +9,7 @@ void computeImage(Context *context)
     double zoomY = context->drawZoneHeight / (Y2 - Y1);
     double relativeX(0.0);
     double relativeY(0.0);
+    int iterations(0);
 
     for (int x = 0; x < context->drawZoneWidth; x++)
     {
@@ -16,12 +17,13 @@ void computeImage(Context *context)
         {
             relativeX = x / zoomX + X1;
             relativeY = y / zoomY + Y1;
-            context->setPixel(x, y, mandelbrot(relativeX, relativeY));
+            iterations = mandelbrot(relativeX, relativeY);
+            context->setPixel(x, y, iterations, iterations == MAX_ITERATIONS ? true : false);
         }
     }
 }
 
-bool mandelbrot(double x, double y)
+int mandelbrot(double x, double y)
 {
     ComplexNumber c = ComplexNumber(x, y);
     ComplexNumber z = ComplexNumber();
@@ -35,5 +37,5 @@ bool mandelbrot(double x, double y)
         i++;
     } while (z.r * z.r + z.i * z.i < 4.0 && i < MAX_ITERATIONS);
 
-    return i == MAX_ITERATIONS ? true : false;
+    return i;
 }
