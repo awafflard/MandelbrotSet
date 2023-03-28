@@ -2,12 +2,15 @@
 #include <SFML/Graphics.hpp>
 #include "Context.hpp"
 #include "mandelbrot.hpp"
+#include "FpsCounter.hpp"
 
 int main()
 {
     Context *context = new Context();
 
     context->init();
+
+    FpsCounter counter;
     
     while (context->window->isOpen())
     {
@@ -28,7 +31,7 @@ int main()
             }
         }
 
-        context->window->clear(sf::Color::White);
+        context->window->clear(sf::Color::Black);
 
         computeImage(context);
         if(!context->draw())
@@ -38,7 +41,11 @@ int main()
             return -1;
         }
         else
+        {
+            counter.draw(context->window);
             context->window->display();
+        }
+
     }
 
     delete(context);

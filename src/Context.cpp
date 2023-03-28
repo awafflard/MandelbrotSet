@@ -8,30 +8,24 @@ Context::Context()
 void Context::init()
 {
     sf::VideoMode resolution = sf::VideoMode::getDesktopMode();
-    this->windowWidth = (int)resolution.width;
-    this->windowHeight = (int)resolution.height;
 
-    if ((double)resolution.width / (double)resolution.height > 1.125)
+    if (resolution.width > resolution.height)
     {
-        this->drawZoneWidth = resolution.height * 1.125;
-        this->drawZoneHeight = resolution.height;
-        this->drawZoneOffsetX = (resolution.width - this->drawZoneWidth) / 2;
-        this->drawZoneOffsetY = 0;
+        this->windowHeight = (int)(resolution.height * 0.9);
+        this->windowWidth = (int)(this->windowHeight * 1.125);
     }
     else
     {
-        this->drawZoneWidth = resolution.width;
-        this->drawZoneHeight = resolution.width * 1.125;
-        this->drawZoneOffsetX = 0;
-        this->drawZoneOffsetY = (resolution.height - this->drawZoneHeight) / 2;
+        this->windowWidth = (int)(resolution.width * 0.9);
+        this->windowHeight = (int)(this->windowWidth / 1.125);
     }
 
-    this->window = new sf::RenderWindow(resolution, "Mandelbrot Set", sf::Style::Fullscreen);
+    this->window = new sf::RenderWindow(sf::VideoMode(this->windowWidth, this->windowHeight), "Mandelbrot Set", sf::Style::Close);
     this->pixels = new sf::Image();
     this->texture = new sf::Texture();
     this->sprite = new sf::Sprite();
 
-    this->pixels->create(this->drawZoneWidth, this->drawZoneHeight, sf::Color::White);
+    this->pixels->create(this->windowWidth, this->windowHeight, sf::Color::White);
 
     this->initColors();
 }
@@ -78,7 +72,6 @@ bool Context::draw()
             return false;
         }
         this->sprite->setTexture(*this->texture);
-        this->sprite->setPosition(this->drawZoneOffsetX, this->drawZoneOffsetY);
         this->window->draw(*this->sprite);
 
         return true;

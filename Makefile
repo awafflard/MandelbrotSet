@@ -11,6 +11,7 @@ LIB = -lsfml-graphics -lsfml-window -lsfml-system
 SRC = 	src/main.cpp\
 		src/ComplexNumber.cpp\
 	  	src/Context.cpp\
+		src/FpsCounter.cpp\
 		src/mandelbrot.cpp
 
 OBJ = $(SRC:src/%.cpp=obj/%.o)

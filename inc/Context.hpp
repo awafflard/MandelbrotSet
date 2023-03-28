@@ -16,10 +16,6 @@ class Context {
         sf::RenderWindow *window;
         int windowWidth;
         int windowHeight;
-        int drawZoneWidth;
-        int drawZoneHeight;
-        int drawZoneOffsetX;
-        int drawZoneOffsetY;
 
     private:
         void initColors();
