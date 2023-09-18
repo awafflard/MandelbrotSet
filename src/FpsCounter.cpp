@@ -26,7 +26,7 @@ void FpsCounter::draw(sf::RenderWindow *window)
     std::stringstream fps;
 
     this->elapsed = this->clock.restart();
-    calcTime << "Calculation time: " << elapsed.asMilliseconds() << "ms";
+    calcTime << "Processing time: " << elapsed.asMilliseconds() << "ms";
     this->calculationTime.setString (calcTime.str());
     fps << "FPS: " << 1000 / elapsed.asMilliseconds();
     this->framesPerSecond.setString(fps.str());

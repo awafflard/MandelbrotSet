@@ -12,7 +12,7 @@ SRC = 	src/main.cpp\
 		src/ComplexNumber.cpp\
 	  	src/Context.cpp\
 		src/FpsCounter.cpp\
-		src/mandelbrot.cpp
+		src/Mandelbrot.cpp
 
 OBJ = $(SRC:src/%.cpp=obj/%.o)
 

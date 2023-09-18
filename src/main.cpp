@@ -1,12 +1,18 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Context.hpp"
-#include "mandelbrot.hpp"
+#include "Mandelbrot.hpp"
 #include "FpsCounter.hpp"
+
+void handleMouseWheelEvent(sf::Event& event, Context* context, Mandelbrot* mandelbrot)
+{
+    mandelbrot->setZoom(context, event.mouseWheel.x, event.mouseWheel.y, event.mouseWheel.delta);
+}
 
 int main()
 {
-    Context *context = new Context();
+    Context* context = new Context();
+    Mandelbrot* mandelbrot = Mandelbrot::getInstance();
 
     context->init();
 
@@ -25,6 +31,11 @@ int main()
                 case sf::Event::KeyPressed:
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                         context->window->close();
+                    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+                        mandelbrot->resetView();
+                    break;
+                case sf::Event::MouseWheelMoved:
+                    handleMouseWheelEvent(event, context, mandelbrot);
                     break;
                 default:
                     break;
@@ -33,7 +44,7 @@ int main()
 
         context->window->clear(sf::Color::Black);
 
-        computeImage(context);
+        mandelbrot->computeImage(context);
         if(!context->draw())
         {
             context->window->close();
