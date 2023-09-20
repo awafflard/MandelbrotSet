@@ -2,7 +2,7 @@ NAME = MandelbrotSet
 
 CXX = g++
 
-CXXFLAGS = -Wall -Werror -Wextra -o3 -std=c++17
+CXXFLAGS = -Wall -Werror -Wextra -o3 -std=c++17 -pthread
 
 INC = -I inc
 

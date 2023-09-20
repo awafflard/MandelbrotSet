@@ -19,6 +19,7 @@ class Mandelbrot {
         Mandelbrot();
         ~Mandelbrot() = default;
         int mandelbrot(double x, double y);
+        void computePartialImage(Context * context, int xStart, int xEnd, int yStart, int yEnd, double stepX, double stepY);
         double xMin;
         double xMax;
         double yMin;

@@ -2,6 +2,7 @@
 #include "ComplexNumber.hpp"
 #include "Context.hpp"
 #include <SFML/Graphics.hpp>
+#include <thread>
 
 Mandelbrot::Mandelbrot()
 {
@@ -129,9 +130,6 @@ void Mandelbrot::computeImage(Context *context)
 {
     double stepX = context->windowWidth / (this->xEnd - this->xStart);
     double stepY = context->windowHeight / (this->yEnd - this->yStart);
-    double relativeX = 0.0;
-    double relativeY = 0.0;
-    int it = 0;
 
     if (this->framesAtCurentIterations >= this->maxFramesAtCurentIterations)
     {
@@ -140,17 +138,36 @@ void Mandelbrot::computeImage(Context *context)
         this->framesAtCurentIterations = 0;
     }
 
-    for (int x = 0; x < context->windowWidth; x++)
+    std::thread t1(&Mandelbrot::computePartialImage, this, context, 0, context->windowWidth / 2, 0, context->windowHeight / 2, stepX, stepY);
+    std::thread t2(&Mandelbrot::computePartialImage, this, context, context->windowWidth / 2, context->windowWidth, 0, context->windowHeight / 2, stepX, stepY);
+    std::thread t3(&Mandelbrot::computePartialImage, this, context, 0, context->windowWidth / 2, context->windowHeight / 2, context->windowHeight, stepX, stepY);
+    std::thread t4(&Mandelbrot::computePartialImage, this, context, context->windowWidth / 2, context->windowWidth, context->windowHeight / 2, context->windowHeight, stepX, stepY);
+
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+
+    this->framesAtCurentIterations++;
+}
+
+void Mandelbrot::computePartialImage(Context * context, int xStart, int xEnd, int yStart, int yEnd, double stepX, double stepY)
+{
+    double relativeX = 0.0;
+    double relativeY = 0.0;
+    int it = 0;
+
+    for (int x = xStart; x < xEnd; x++)
     {
-        for (int y = 0; y < context->windowHeight; y++)
+        for (int y = yStart; y < yEnd; y++)
         {
+
             relativeX = x / stepX + this->xStart;
             relativeY = y / stepY + this->yStart;
             it = this->mandelbrot(relativeX, relativeY);
             context->setPixel(x, y, it, it == this->iterations ? true : false);
         }
     }
-    this->framesAtCurentIterations++;
 }
 
 int Mandelbrot::mandelbrot(double x, double y)
