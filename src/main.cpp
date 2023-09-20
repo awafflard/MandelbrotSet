@@ -56,7 +56,6 @@ int main()
             counter.draw(context->window);
             context->window->display();
         }
-
     }
 
     delete(context);

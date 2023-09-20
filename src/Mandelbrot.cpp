@@ -14,7 +14,12 @@ Mandelbrot::Mandelbrot()
     this->yStart = this->yMin;
     this->yEnd = this->yMax;
     this->zoomFactor = 1.1;
-    this->iterations = 256;
+    this->currentZoomLevel = 1.0;
+    this->minIterations = 32;
+    this->iterations = 32;
+    this->framesAtCurentIterations = 0;
+    this->maxFramesAtCurentIterations = 2;
+    this->maxIterations = 1024;
 }
 
 Mandelbrot* Mandelbrot::getInstance()
@@ -33,7 +38,7 @@ void Mandelbrot::setZoom(Context* context, int posX, int posY, int delta)
     double newXMax = 0.0;
     double newYMin = 0.0;
     double newYMax = 0.0;
-    
+
     if (delta > 0)
     {
         newXMin = fractalX - (fractalX - this->xStart) / this->zoomFactor;
@@ -86,15 +91,37 @@ void Mandelbrot::setZoom(Context* context, int posX, int posY, int delta)
         this->yStart = newYMin;
         this->yEnd = newYMax;
     }
+
+    this->currentZoomLevel = 1.0 / ((this->xEnd - this->xStart) / (this->xMax - this->xMin));
+    this->framesAtCurentIterations = 0;
+
+    if (this->currentZoomLevel < 3.0)
+        this->iterations = this->minIterations < 32 ? 32 : this->minIterations;
+    else if (3.0 <= this->currentZoomLevel  && this->currentZoomLevel < 5.0)
+        this->iterations = this->minIterations < 32 ? 32 : this->minIterations;
+    else if (5.0 <= this->currentZoomLevel && this->currentZoomLevel < 1.0e2)
+        this->iterations = this->minIterations < 64 ? 64 : this->minIterations;
+    else if (1.0e2 <= this->currentZoomLevel && this->currentZoomLevel < 1.0e3)
+        this->iterations = this->minIterations < 128 ? 128 : this->minIterations;
+    else if (1.0e3 <= this->currentZoomLevel && this->currentZoomLevel < 1.0e4)
+        this->iterations = this->minIterations < 256 ? 256 : this->minIterations;
+    else if (1.0e4 <= this->currentZoomLevel && this->currentZoomLevel < 1.0e7)
+        this->iterations = this->minIterations < 512 ? 512 : this->minIterations;
+    else
+        this->iterations = this->minIterations < 1024 ? 1024 : this->minIterations;
+
+    if (this->maxIterations < this->iterations)
+        this->maxIterations = this->iterations;
+
 }
 
 void Mandelbrot::resetView()
 {
-    fprintf(stderr, "View reset command received\n");
     this->xStart = this->xMin;
     this->xEnd = this->xMax;
     this->yStart = this->yMin;
     this->yEnd = this->yMax;
+    this->currentZoomLevel = 1.0;
 }
 
 
@@ -106,6 +133,13 @@ void Mandelbrot::computeImage(Context *context)
     double relativeY = 0.0;
     int it = 0;
 
+    if (this->framesAtCurentIterations >= this->maxFramesAtCurentIterations)
+    {
+        if (this->iterations < this->maxIterations)
+            this->iterations *= 2;
+        this->framesAtCurentIterations = 0;
+    }
+
     for (int x = 0; x < context->windowWidth; x++)
     {
         for (int y = 0; y < context->windowHeight; y++)
@@ -116,6 +150,7 @@ void Mandelbrot::computeImage(Context *context)
             context->setPixel(x, y, it, it == this->iterations ? true : false);
         }
     }
+    this->framesAtCurentIterations++;
 }
 
 int Mandelbrot::mandelbrot(double x, double y)

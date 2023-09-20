@@ -13,6 +13,7 @@ class Mandelbrot {
         void resetView();
         void computeImage(Context* context);
 
+
     private:
         inline static Mandelbrot* instance{nullptr};
         Mandelbrot();
@@ -27,7 +28,12 @@ class Mandelbrot {
         double yStart;
         double yEnd;
         double zoomFactor;
+        double currentZoomLevel;
+        int minIterations;
         int iterations;
+        int framesAtCurentIterations;
+        int maxFramesAtCurentIterations;
+        int maxIterations;
 };
 
 #endif
